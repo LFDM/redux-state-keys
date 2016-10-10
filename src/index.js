@@ -23,7 +23,7 @@ export function bindStateKeyToActionCreators(stateKey, actionCreators) {
 }
 
 export function bindStateKeyToSelector(stateKey, selector) {
-  return (state) => selector(state, stateKey);
+  return (state, ...args) => selector(state, stateKey, ...args);
 }
 
 export function bindStateKeyToSelectors(stateKey, selectors) {
@@ -34,10 +34,10 @@ export function bindStateKeyToSelectors(stateKey, selectors) {
 }
 
 export function createSelectorWithSubstateHandling(selector, initialSubstate = {}, sliceName = null) {
-  return (state, stateKey) => {
+  return (state, stateKey, ...args) => {
     const slice = sliceName ? state[sliceName] : state;
     const substate = slice[stateKey] || initialSubstate;
-    return selector(substate);
+    return selector(substate, ...args);
   };
 }
 
