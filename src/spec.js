@@ -9,9 +9,9 @@ import {
   bindStateKeyToActionCreators,
   bindStateKeyToSelector,
   bindStateKeyToSelectors,
-  createSelectorWithSubstate,
-  createSelectorsWithSubstate,
-  createReducerWithSubstate,
+  createSelectorWithSubstateHandling,
+  createSelectorsWithSubstateHandling,
+  createReducerWithSubstateHandling,
 } from '.';
 
 const ACTION = {
@@ -76,8 +76,8 @@ describe('reduxFork', () => {
         setB: (val) => createAction(ACTION.B)(val),
       };
 
-      const substateReducer = createReducerWithSubstate(reducer, INITIAL_SUBSTATE);
-      const substateSelectors = createSelectorsWithSubstate(selectors, INITIAL_SUBSTATE);
+      const substateReducer = createReducerWithSubstateHandling(reducer, INITIAL_SUBSTATE);
+      const substateSelectors = createSelectorsWithSubstateHandling(selectors, INITIAL_SUBSTATE);
 
       return {
         reducer: substateReducer,
