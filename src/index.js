@@ -1,4 +1,4 @@
-export const STATE_KEY_PROPERTY = '__reduxForkStateKey';
+export const STATE_KEY_PROPERTY = '__reduxStateKey__';
 
 function reduceObject(obj, reducer, initialMem) {
   return Object.keys(obj).reduce((mem, key) => reducer(mem, obj[key], key), initialMem);
