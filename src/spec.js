@@ -2,6 +2,7 @@
 
 import { expect } from 'chai';
 import { handleActions, createAction } from 'redux-actions';
+import { combineReducers } from 'redux';
 
 import {
   STATE_KEY_PROPERTY,
@@ -45,13 +46,17 @@ describe('reduxFork', () => {
   });
 
   describe('createReducerWithStateKeyHandling', () => {
-    function setup() {
+    function setup(typePrefix = '') {
       function applyA(state, action) {
         return { ...state, a: action.payload };
       }
 
       function applyB(state, action) {
         return { ...state, b: action.payload };
+      }
+
+      function withPrefix(prefix, type) {
+        return `${prefix}${type}`;
       }
 
       const INITIAL_STATE = {};
@@ -61,9 +66,12 @@ describe('reduxFork', () => {
         b: 1,
       };
 
+      const actionTypeA = withPrefix(typePrefix, ACTION.A);
+      const actionTypeB = withPrefix(typePrefix, ACTION.B);
+
       const reducer = handleActions({
-        [ACTION.A]: applyA,
-        [ACTION.B]: applyB,
+        [actionTypeA]: applyA,
+        [actionTypeB]: applyB,
       });
 
       const selectors = {
@@ -72,8 +80,8 @@ describe('reduxFork', () => {
       };
 
       const actionCreators = {
-        setA: (val) => createAction(ACTION.A)(val),
-        setB: (val) => createAction(ACTION.B)(val),
+        setA: (val) => createAction(actionTypeA)(val),
+        setB: (val) => createAction(actionTypeB)(val),
       };
 
       const substateReducer = createReducerWithStateKeyHandling(reducer, INITIAL_SUBSTATE, INITIAL_STATE);
@@ -108,7 +116,7 @@ describe('reduxFork', () => {
       expect(boundSelectors.getB(stateAfterB)).to.equal(2);
     });
 
-    it('updates substate when a bound action is thrown', () => {
+    it('updates substate when a bound action is dispatched', () => {
       const stateKey = 'x';
       const { reducer, selectors, actionCreators, INITIAL_STATE} = setup();
 
@@ -162,6 +170,27 @@ describe('reduxFork', () => {
           b: nextBOfY
         }
       });
+    });
+
+    it('does not update unrelated substates', () => {
+      const duck1 = setup('1');
+      const duck2 = setup('2');
+      const stateKey = 'x';
+
+      const reducer = combineReducers({ reducer1: duck1.reducer, reducer2: duck2.reducer });
+
+      const boundActionCreatorsX1 = bindStateKeyToActionCreators(stateKey, duck1.actionCreators);
+      const boundActionCreatorsX2 = bindStateKeyToActionCreators(stateKey, duck2.actionCreators);
+
+      const nextAOfX1 = 1;
+      const nextAOfX2 = 2;
+
+      let nextState = {};
+      nextState = reducer(nextState, boundActionCreatorsX1.setA(nextAOfX1));
+      console.log(nextState);
+
+      nextState = reducer(nextState, boundActionCreatorsX2.setA(nextAOfX2));
+      console.log(nextState);
     });
   });
 });
