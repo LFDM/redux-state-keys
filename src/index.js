@@ -33,7 +33,7 @@ export function bindStateKeyToSelectors(stateKey, selectors) {
   }, {});
 }
 
-export function createSelectorWithSubstateHandling(selector, initialSubstate = {}, sliceName = null) {
+export function createSelectorWithStateKeyHandling(selector, initialSubstate = {}, sliceName = null) {
   return (state, stateKey, ...args) => {
     const slice = sliceName ? state[sliceName] : state;
     const substate = slice[stateKey] || initialSubstate;
@@ -41,14 +41,14 @@ export function createSelectorWithSubstateHandling(selector, initialSubstate = {
   };
 }
 
-export function createSelectorsWithSubstateHandling(selectors, initialSubstate = {}, sliceName = null) {
+export function createSelectorsWithStateKeyHandling(selectors, initialSubstate = {}, sliceName = null) {
   return reduceObject(selectors, (mem, selector, name) => {
-    mem[name] = createSelectorWithSubstateHandling(selector, initialSubstate, sliceName);
+    mem[name] = createSelectorWithStateKeyHandling(selector, initialSubstate, sliceName);
     return mem;
   }, {});
 }
 
-export function createReducerWithSubstateHandling(reducer, initialSubstate = {}) {
+export function createReducerWithStateKeyHandling(reducer, initialSubstate = {}) {
   return (state, action) => {
     const stateKey = action[STATE_KEY_PROPERTY];
     checkStateKey(stateKey, ERROR.NO_STATE_KEY_IN_ACTION);
