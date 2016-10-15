@@ -52,7 +52,7 @@ export function createReducerWithStateKeyHandling(reducer, initialSubstate = {},
     }
     const substate = state[stateKey] || initialSubstate;
     const newSubstate = reducer(substate, action);
-    if (newSubstate === initialSubstate) {
+    if (newSubstate === substate) {
       return state;
     }
     return { ...state, [stateKey]: newSubstate };

@@ -185,12 +185,13 @@ describe('reduxFork', () => {
       const nextAOfX1 = 1;
       const nextAOfX2 = 2;
 
-      let nextState = {};
-      nextState = reducer(nextState, boundActionCreatorsX1.setA(nextAOfX1));
-      console.log(nextState);
-
-      nextState = reducer(nextState, boundActionCreatorsX2.setA(nextAOfX2));
-      console.log(nextState);
+      const initialState = {};
+      const nextState1 = reducer(initialState, boundActionCreatorsX1.setA(nextAOfX1));
+      expect(nextState1.reducer1).not.to.equal(duck1.INITIAL_STATE);
+      expect(nextState1.reducer2).to.equal(duck2.INITIAL_STATE);
+      const nextState2 = reducer(nextState1, boundActionCreatorsX2.setA(nextAOfX2));
+      expect(nextState2.reducer1).to.equal(nextState1.reducer1);
+      expect(nextState2.reducer2).not.to.equal(nextState2.reducer1);
     });
   });
 });
