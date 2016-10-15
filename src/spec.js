@@ -5,12 +5,8 @@ import { handleActions, createAction } from 'redux-actions';
 import { combineReducers } from 'redux';
 
 import {
-  STATE_KEY_PROPERTY,
-  bindStateKeyToActionCreator,
   bindStateKeyToActionCreators,
-  bindStateKeyToSelector,
   bindStateKeyToSelectors,
-  createSelectorWithStateKeyHandling,
   createSelectorsWithStateKeyHandling,
   createReducerWithStateKeyHandling,
 } from '.';
@@ -20,31 +16,7 @@ const ACTION = {
   B: 'B',
 };
 
-describe('reduxFork', () => {
-  describe('bindStateKeyToActionCreator', () => {
-
-  });
-
-  describe('bindStateKeyToActionCreators', () => {
-
-  });
-
-  describe('bindStateKeyToSelector', () => {
-
-  });
-
-  describe('bindStateKeyToSelectors', () => {
-
-  });
-
-  describe('createSelectorWithStateKeyHandling', () => {
-
-  });
-
-  describe('createSelectorsWithStateKeyHandling', () => {
-
-  });
-
+describe('reduxStateKeys', () => {
   describe('createReducerWithStateKeyHandling', () => {
     function setup(typePrefix = '') {
       function applyA(state, action) {
