@@ -1,5 +1,5 @@
 {
-  "name": "redux-fork",
+  "name": "redux-state-keys",
   "version": "0.0.1",
   "description": "",
   "main": "dist/index.js",
@@ -9,14 +9,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/LFDM/redux-fork.git"
+    "url": "git+https://github.com/LFDM/redux-state-keys.git"
   },
   "author": "LFDM",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/LFDM/redux-fork/issues"
+    "url": "https://github.com/LFDM/redux-state-keys/issues"
   },
-  "homepage": "https://github.com/LFDM/redux-fork#readme",
+  "homepage": "https://github.com/LFDM/redux-state-keys#readme",
   "devDependencies": {
     "babel-cli": "^6.16.0",
     "babel-eslint": "^7.0.0",
