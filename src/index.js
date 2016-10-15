@@ -1,9 +1,5 @@
 export const STATE_KEY_PROPERTY = '__reduxForkStateKey';
 
-const ERROR = {
-  NO_STATE_KEY_IN_ACTION: `No stateKey found in action - did you call bindStateKeyToActionCreator(s)?`
-};
-
 function reduceObject(obj, reducer, initialMem) {
   return Object.keys(obj).reduce((mem, key) => reducer(mem, obj[key], key), initialMem);
 }
@@ -48,18 +44,17 @@ export function createSelectorsWithStateKeyHandling(selectors, initialSubstate =
   }, {});
 }
 
-export function createReducerWithStateKeyHandling(reducer, initialSubstate = {}) {
-  return (state, action) => {
+export function createReducerWithStateKeyHandling(reducer, initialSubstate = {}, initialState = {}) {
+  return (state = initialState, action) => {
     const stateKey = action[STATE_KEY_PROPERTY];
-    checkStateKey(stateKey, ERROR.NO_STATE_KEY_IN_ACTION);
+    if (!stateKey) {
+      return state;
+    }
     const substate = state[stateKey] || initialSubstate;
     const newSubstate = reducer(substate, action);
+    if (newSubstate === initialSubstate) {
+      return state;
+    }
     return { ...state, [stateKey]: newSubstate };
   };
-}
-
-function checkStateKey(stateKey, msg) {
-  if (!stateKey) {
-    throw new Error(msg);
-  }
 }

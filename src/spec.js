@@ -64,7 +64,7 @@ describe('reduxFork', () => {
       const reducer = handleActions({
         [ACTION.A]: applyA,
         [ACTION.B]: applyB,
-      }, INITIAL_STATE);
+      });
 
       const selectors = {
         getA: (state) => state.a,
@@ -76,7 +76,7 @@ describe('reduxFork', () => {
         setB: (val) => createAction(ACTION.B)(val),
       };
 
-      const substateReducer = createReducerWithStateKeyHandling(reducer, INITIAL_SUBSTATE);
+      const substateReducer = createReducerWithStateKeyHandling(reducer, INITIAL_SUBSTATE, INITIAL_STATE);
       const substateSelectors = createSelectorsWithStateKeyHandling(selectors, INITIAL_SUBSTATE);
 
       return {
