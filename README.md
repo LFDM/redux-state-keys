@@ -39,16 +39,22 @@ Let's look at a simple module to handle loading states:
     return state[SLICE_NAME].isLoading;
   }
 
+  const reducers = {
+    [SLICE_NAME]: reducer
+  };
+
+  const selectors = {
+    getLoadingState
+  };
+
+  const actionCreators = {
+    doSetIsLoading
+  };
+
   export default {
-    reducers: {
-      [SLICE_NAME]: reducer,
-    },
-    selectors: {
-      getLoadingState,
-    },
-    actionCreators = {
-      doSetIsLoading
-    }
+    reducers,
+    selectors,
+    actionCreators,
   };
 
 
@@ -57,7 +63,7 @@ Let's look at a simple module to handle loading states:
   import { createStore, combineReducers } from 'redux';
   import loadingModule from './loadingModule';
 
-  const combinedReducer = combineReducer({
+  const combinedReducer = combineReducers({
     ...loadingModule.reducers
   });
 
@@ -99,16 +105,22 @@ We therefore might need to introduce some kind of name property - a state key.
     return namedState.isLoading;
   }
 
+  const reducers = {
+    [SLICE_NAME]: reducer
+  };
+
+  const selectors = {
+    getLoadingState
+  };
+
+  const actionCreators = {
+    doSetIsLoading
+  };
+
   export default {
-    reducers: {
-      [SLICE_NAME]: reducer,
-    },
-    selectors: {
-      getLoadingState,
-    },
-    actionCreators = {
-      doSetIsLoading
-    }
+    reducers,
+    selectors,
+    actionCreators,
   };
 
 ```
@@ -149,20 +161,27 @@ The helper functions in `redux-state-keys` allow to hide this complexity - our m
     return state.isLoading;
   }
 
-  export default {
-    reducers: {
-      [SLICE_NAME]: createReducerWithStateKeyHandling(reducer, INITIAL_SUBSTATE),
-    },
-    selectors: createSelectorsWithStateKeyHandling({
-      getLoadingState,
-    }, INITIAL_SUBSTATE, SLICE_NAME),
-    actionCreators = {
-      doSetIsLoading
-    }
+  const reducers = {
+    [SLICE_NAME]: createReducerWithStateKeyHandling(reducer, INITIAL_SUBSTATE),
   };
+
+  const selectors = createSelectorsWithStateKeyHandling({
+    getLoadingState
+  }, INITIAL_SUBSTATE, SLICE_NAME);
+
+  const actionCreators = {
+    doSetIsLoading
+  };
+
+  export default {
+    reducers,
+    selectors,
+    actionCreators,
+  };
+
 ```
 
-Consuming containers can use further helper methods to shield you away from dealing with state keys manually
+Consuming containers can use further helper methods to shield you away from dealing with state keys manually.
 
 ```javascript
 // a simple presenter in a presenter.js file
