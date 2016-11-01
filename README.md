@@ -1,9 +1,10 @@
 # Redux State Keys
 
 This library tries to deal with the problem of writing a lot of repetitive boilerplate code, when you are trying to deal with several instances of a same type.
+
 This is a common pattern which typically arises in a lot of places in your application: You want to save whether a modal is open or not, you want to modify a User which is stored in a Map<Id, User>, save several error states etc.
 
-For a high level overview on this topic check out [Robin Wieruch's blog post about state keys](http://www.robinwieruch.de/redux-state-keys/).A simple example is to store loading states in your application.
+For a high level overview on this topic check out [Robin Wieruch's blog post about state keys](http://www.robinwieruch.de/redux-state-keys/).
 
 
 ## Example
@@ -11,7 +12,6 @@ For a high level overview on this topic check out [Robin Wieruch's blog post abo
 Let's look at a simple module to handle loading states:
 
 ```javascript
-
   // the loading module
 
   const SLICE_NAME = 'loadingStates';
@@ -69,8 +69,6 @@ This is not terribly useful, because we can handle only one global loading state
 We therefore might need to introduce some kind of name property - a state key.
 
 ```javascript
-
-
   // the loading module
 
   const SLICE_NAME = 'loadingStates';
@@ -166,8 +164,7 @@ The helper functions in `redux-state-keys` allow to hide this complexity - our m
 
 Consuming containers can use further helper methods to shield you away from dealing with state keys manually
 
-```
-
+```javascript
 // a simple presenter in a presenter.js file
 
 export default ({ isLoading, setLoading }) => {
@@ -180,6 +177,7 @@ export default ({ isLoading, setLoading }) => {
     </div>
   );
 };
+
 
 // container without redux-state-keys helper
 
@@ -202,6 +200,7 @@ function mapDispatchToProps(dispatch, props) {
 
 export default connect(mapStateToProps, mapDispatchToProps)(presenter);
 
+
 // container with redux-state-keys helper
 
 import { connect } from 'react-redux';
@@ -219,13 +218,17 @@ function mapStateToProps(state, props) {
 
 function mapDispatchToProps(dispatch, props) {
   const { name } = props;
-  const boundActionCreators = bindStateKeyToActionCreators(name, { setLoading: actionCreators.doSetIsLoading });
+  const boundActionCreators = bindStateKeyToActionCreators(name, {
+    setLoading: actionCreators.doSetIsLoading
+  });
   return bindActionCreators(boundActionCreators, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(presenter);
 
+
 // render our container component like this
+
 <LoadingDemo name="someKindOfIdentifier" />
 
 ```
